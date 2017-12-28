@@ -121,7 +121,10 @@ class SynacorVM:
             # wmem a b
             a,b = self.read_num(),self.read_num()
             b = self.get_val(b)
-            self.memory[a] = b
+            if a>32767:
+                self.set_regs(a,b)
+            else:
+                self.memory[a] = b
         elif opcode == 17:
             # call a
             a = self.get_val(self.read_num())
