@@ -11,6 +11,7 @@ class SynacorVM:
         self.rip = 0
         self.inputBuffer = []
         self.outbuffer = ""
+        self.instcount = 0
     def read_num(self):
         r = self.memory[self.rip]
         self.rip += 1
@@ -37,6 +38,7 @@ class SynacorVM:
             print addr
             raise "Invalid Memory Address Read"
     def execute_step(self):
+        self.instcount += 1
         assert self.running
         opcode = self.read_num()
         assert 0<=opcode<=21
@@ -175,5 +177,6 @@ def main():
     print "="*80
     print "Synacor VM ended with state, "
     print vm.regs, vm.rip, vm.stack
+    print "Instructions executed = %d"%vm.instcount
 if __name__ == "__main__":
     main()
