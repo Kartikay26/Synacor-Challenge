@@ -8,6 +8,7 @@ class SynacorVM:
         self.running = True
         self.rip = 0
         self.inputBuffer = []
+        self.outbuffer = ""
     def read_num(self):
         r = self.memory[self.rip]
         self.rip += 1
@@ -124,7 +125,12 @@ class SynacorVM:
             self.jump_to(self.stack.pop())
         elif opcode == 19:
             # out a
-            print chr(self.get_val(self.read_num()))
+            outchr = chr(self.get_val(self.read_num()))
+            if outchr == '\n':
+                print self.outbuffer
+                self.outbuffer = ""
+            else:
+                self.outbuffer += outchr
         elif opcode == 20:
             # in a
             a = self.read_num()
@@ -153,8 +159,11 @@ def main():
     print "Read %d-word program..."%len(prog)
     vm = SynacorVM(prog)
     print "Initialised SynacorVM..."
+    print "="*80
     while vm.running:
         vm.execute_step()
-
+    print "="*80
+    print "Synacor VM ended with state, "
+    print vm.regs, vm.rip, vm.stack
 if __name__ == "__main__":
     main()
