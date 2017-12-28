@@ -1,4 +1,4 @@
-class SynacorVM:
+class dism:
     def __init__(self,program):
         self.memory = program
         self.rip = 0
@@ -11,7 +11,8 @@ class SynacorVM:
             return str(r)
         else:
             return 'r'+str(r-32768)
-    def write_step(self):
+    def inst(self,inst):
+        self.cur_inst = inst
         self.rip = self.cur_inst
         try:
             opcode = self.memory[self.cur_inst]
@@ -116,9 +117,8 @@ class SynacorVM:
             out += fxn(("nop"))
         else:
             out += fxn(("?? %d"%opcode))
-        print out+' '*(30-len(out))+"(%d)"%self.rip,
         self.cur_inst += 1
-        print ""
+        return out
 
 def fxn(x):
     if type(x)==str:

@@ -1,3 +1,5 @@
+from disassembler import dism
+
 class SynacorVM:
     def __init__(self,program):
         self.memory = [0 for x in range(32768)]
@@ -151,6 +153,7 @@ def bit15complement(a):
 
 
 def main():
+    debug = True
     print "Starting virtual machine ..."
     print "Importing data..."
     prog = []
@@ -158,10 +161,15 @@ def main():
         prog += [int(num)]
     print "Read %d-word program..."%len(prog)
     vm = SynacorVM(prog)
+    d = dism(prog)
     print "Initialised SynacorVM..."
     print "="*80
     while vm.running:
         vm.execute_step()
+        dm = d.inst(vm.rip)
+        if debug:
+            if 'out' not in dm:
+                print "###",dm
     print "="*80
     print "Synacor VM ended with state, "
     print vm.regs, vm.rip, vm.stack
