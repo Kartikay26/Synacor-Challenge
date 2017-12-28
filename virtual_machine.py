@@ -38,6 +38,7 @@ class SynacorVM:
             print addr
             raise "Invalid Memory Address Read"
     def execute_step(self):
+        init_addr = self.rip
         self.instcount += 1
         assert self.running
         opcode = self.read_num()
@@ -122,9 +123,9 @@ class SynacorVM:
             b = self.get_val(b)
             self.memory[a] = b
         elif opcode == 17:
-            # call 17 a
+            # call a
             a = self.get_val(self.read_num())
-            self.stack.append(self.rip+1)
+            self.stack.append(self.rip)
             self.jump_to(a)
         elif opcode == 18:
             # ret
