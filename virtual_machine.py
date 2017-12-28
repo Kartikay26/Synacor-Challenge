@@ -154,7 +154,9 @@ class SynacorVM:
             # in a
             a = self.read_num()
             if len(self.inputBuffer)==0:
-                self.inputBuffer = list(raw_input())+["\n"]
+                inp = list(raw_input()+"\n")
+                inp.reverse()
+                self.inputBuffer = inp
             else:
                 self.set_regs(a, ord(self.inputBuffer.pop()))
         elif opcode == 21:
