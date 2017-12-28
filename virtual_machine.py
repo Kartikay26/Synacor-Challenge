@@ -18,10 +18,11 @@ class SynacorVM:
         return r
     def jump_to(self, addr):
         self.rip = addr
+    def set_mem(self,addr,value):
+        self.set_regs(addr,value)
     def set_regs(self, addr, value):
         if 0<=addr<=32767:
-            print addr
-            raise "Invalid Memory Address Write"
+            self.memory[addr] = value
         elif 32768<=addr<=32775:
             addr -= 32768
             self.regs[addr] = value
@@ -31,6 +32,15 @@ class SynacorVM:
     def get_val(self, addr):
         if 0<=addr<=32767:
             return addr
+        elif 32768<=addr<=32775:
+            addr -= 32768
+            return self.regs[addr]
+        else:
+            print addr
+            raise "Invalid Memory Address Read"
+    def get_mem(self, addr):
+        if 0<=addr<=32767:
+            return self.memory[addr]
         elif 32768<=addr<=32775:
             addr -= 32768
             return self.regs[addr]
@@ -116,15 +126,14 @@ class SynacorVM:
             # rmem a b
             a,b = self.read_num(),self.read_num()
             b = self.get_val(b)
-            self.set_regs(a,self.memory[b])
+            self.set_regs(a,self.get_mem(b))
         elif opcode == 16:
             # wmem a b
             a,b = self.read_num(),self.read_num()
+            a = self.get_val(a)
             b = self.get_val(b)
-            if a>32767:
-                self.set_regs(a,b)
-            else:
-                self.memory[a] = b
+            # write value b at address a
+            self.set_mem(a,b)
         elif opcode == 17:
             # call a
             a = self.get_val(self.read_num())
