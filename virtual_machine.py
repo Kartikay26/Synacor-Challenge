@@ -186,7 +186,7 @@ def main():
         dm = d.inst(vm.rip)
         if debug_enable <= vm.instcount and (debug_enable+1!=0):
             if 'out' not in dm:
-                print "###",dm,' '*(50-len(dm)),vm.regs, vm.rip, vm.stack
+                print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
     print "="*80
     print "Synacor VM ended with state, "
     print vm.regs, vm.rip, vm.stack
