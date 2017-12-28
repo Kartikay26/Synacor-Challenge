@@ -180,7 +180,7 @@ def main():
     vm = SynacorVM(prog)
     d = dism(prog)
     print "Initialised SynacorVM..."
-    debug_enable = int(raw_input("Enable debug mode at instruction: "))
+    debug_enable = -1 #int(raw_input("Enable debug mode at instruction: "))
     print "="*80
     try:
         while vm.running:
