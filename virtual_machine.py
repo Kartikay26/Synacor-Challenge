@@ -181,15 +181,19 @@ def main():
     print "Initialised SynacorVM..."
     debug_enable = int(raw_input("Enable debug mode at instruction: "))
     print "="*80
-    while vm.running:
-        vm.execute_step()
-        dm = d.inst(vm.rip)
-        if debug_enable <= vm.instcount and (debug_enable+1!=0):
-            if 'out' not in dm:
-                print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
-    print "="*80
-    print "Synacor VM ended with state, "
-    print vm.regs, vm.rip, vm.stack
-    print "Instructions executed = %d"%vm.instcount
+    try:
+        while vm.running:
+            vm.execute_step()
+            dm = d.inst(vm.rip)
+            if debug_enable <= vm.instcount and (debug_enable+1!=0):
+                if 'out' not in dm:
+                    print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
+    except Exception as e:
+        raise e
+    finally:
+        print "="*80
+        print "Synacor VM ended with state, "
+        print vm.regs, vm.rip, vm.stack
+        print "Instructions executed = %d"%vm.instcount
 if __name__ == "__main__":
     main()
