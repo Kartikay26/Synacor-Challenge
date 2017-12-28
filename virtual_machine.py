@@ -124,7 +124,7 @@ class SynacorVM:
             self.jump_to(self.stack.pop())
         elif opcode == 19:
             # out a
-            print self.get_val(self.read_num())
+            print chr(self.get_val(self.read_num()))
         elif opcode == 20:
             # in a
             a = self.read_num()
@@ -152,7 +152,9 @@ def main():
         prog += [int(num)]
     print "Read %d-word program..."%len(prog)
     vm = SynacorVM(prog)
-    print "Initialised SynacorVM,",vm,"..."
+    print "Initialised SynacorVM..."
+    while vm.running:
+        vm.execute_step()
 
 if __name__ == "__main__":
     main()
