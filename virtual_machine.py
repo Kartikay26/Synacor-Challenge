@@ -122,7 +122,7 @@ class SynacorVM:
         elif opcode == 17:
             # call 17 a
             a = self.get_val(self.read_num())
-            self.stack.push(self.rip+1)
+            self.stack.append(self.rip+1)
             self.jump_to(a)
         elif opcode == 18:
             # ret
@@ -155,7 +155,7 @@ def bit15complement(a):
 
 
 def main():
-    debug = True
+    debug = False
     print "Starting virtual machine ..."
     print "Importing data..."
     prog = []
