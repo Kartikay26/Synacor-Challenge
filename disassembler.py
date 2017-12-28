@@ -3,25 +3,22 @@ class SynacorVM:
         self.memory = program
         self.rip = 0
         self.running = True
+        self.offset = 0
     def read_num(self):
-        r = self.memory[self.rip]
+        r = self.memory[self.rip+self.offset]
         self.rip += 1
         if r<32768:
             return str(r)
         else:
             return 'r'+str(r-32768)
     def write_step(self):
-        if self.rip==len(self.memory):
-            self.running = False
-            return
-        try:
-            opcode = int(self.read_num())
-        except:
-            self.running = False
-            print "FUCK"
-            return
+        if not self.running:
+            print "\t\t\t"*self.offset+"FUCK"
+            return 0
+        opcode = self.memory[self.rip+self.offset]
+        self.rip += 1
         #assert 0<=opcode<=21
-        print "%d."%self.rip,
+        print "\t\t\t"*self.offset+"%d."%(self.rip+self.offset),
         if opcode == 0:
             # halt
             print "halt"
@@ -128,8 +125,13 @@ def main():
     prog = []
     for num in open("program.txt"):
         prog += [int(num)]
-    vm = SynacorVM(prog)
-    while vm.running:
-        vm.write_step()
+    import time
+    vms = [SynacorVM(prog) for x in range(4)]
+    for x in range(4):
+        vms[x].offset = x
+    while True:
+        time.sleep(1)
+        for offset in range(4):
+            vms[offset].write_step()
 if __name__ == "__main__":
     main()
