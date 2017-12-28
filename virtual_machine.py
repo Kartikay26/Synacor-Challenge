@@ -1,6 +1,7 @@
 class SynacorVM:
     def __init__(self):
-        pass
+        self.memory = [0 for x in range(32768)]
+        regs = [0,0,0,0,0,0,0,0]
 
 def main():
     print "Starting virtual machine ..."
