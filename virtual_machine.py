@@ -70,11 +70,13 @@ class SynacorVM:
         elif opcode == 7:
             # jt a b
             a,b = self.read_num(), self.read_num()
+            a = self.get_val(a)
             if a!=0:
                 self.jump_to(b)
         elif opcode == 8:
             # jf a b
             a,b = self.read_num(), self.read_num()
+            a = self.get_val(a)
             if a==0:
                 self.jump_to(b)
         elif opcode == 9:
