@@ -157,8 +157,7 @@ class SynacorVM:
                 inp = list(raw_input()+"\n")
                 inp.reverse()
                 self.inputBuffer = inp
-            else:
-                self.set_regs(a, ord(self.inputBuffer.pop()))
+            self.set_regs(a, ord(self.inputBuffer.pop()))
         elif opcode == 21:
             # nop
             pass
@@ -189,7 +188,11 @@ def main():
             dm = d.inst(vm.rip)
             if debug_enable <= vm.instcount and (debug_enable+1!=0):
                 if 'out' not in dm:
-                    print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
+                    #print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
+                    print "###",dm,' '*(50-len(dm)),"(%d)"%vm.instcount,
+                    stc = str(vm.regs)
+                    print stc,' '*(50-len(stc)),
+                    print '*'*len(vm.stack)
     except Exception as e:
         raise e
     finally:
