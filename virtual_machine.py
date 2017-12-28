@@ -157,7 +157,6 @@ def bit15complement(a):
 
 
 def main():
-    debug = False
     print "Starting virtual machine ..."
     print "Importing data..."
     prog = []
@@ -167,13 +166,14 @@ def main():
     vm = SynacorVM(prog)
     d = dism(prog)
     print "Initialised SynacorVM..."
+    debug_enable = int(raw_input("Enable debug mode at instruction: "))
     print "="*80
     while vm.running:
         vm.execute_step()
         dm = d.inst(vm.rip)
-        if debug:
+        if debug_enable <= vm.instcount and (debug_enable+1!=0):
             if 'out' not in dm:
-                print "###",dm
+                print "###",dm,' '*(50-len(dm)),vm.regs, vm.rip, vm.stack
     print "="*80
     print "Synacor VM ended with state, "
     print vm.regs, vm.rip, vm.stack
