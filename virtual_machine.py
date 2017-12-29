@@ -48,6 +48,7 @@ class SynacorVM:
             print addr
             raise "Invalid Memory Address Read"
     def execute_step(self):
+        debug = False
         init_addr = self.rip
         self.instcount += 1
         assert self.running
@@ -154,13 +155,19 @@ class SynacorVM:
             # in a
             a = self.read_num()
             if len(self.inputBuffer)==0:
-                inp = list(raw_input()+"\n")
+                z = raw_input()
+                inp = list(z+"\n")
                 inp.reverse()
                 self.inputBuffer = inp
+                print ">>>>>",z
+                if "use teleporter" in z:
+                    debug = True
             self.set_regs(a, ord(self.inputBuffer.pop()))
         elif opcode == 21:
             # nop
             pass
+        if debug:
+            return "debug"
 
 def bit15complement(a):
     x = bin(a)[2:]
@@ -180,19 +187,23 @@ def main():
     vm = SynacorVM(prog)
     d = dism(prog)
     print "Initialised SynacorVM..."
-    debug_enable = -1 #int(raw_input("Enable debug mode at instruction: "))
     print "="*80
+    debugmode = False
     try:
         while vm.running:
-            vm.execute_step()
+            s = vm.execute_step()
             dm = d.inst(vm.rip)
-            if debug_enable <= vm.instcount and (debug_enable+1!=0):
-                if 'out' not in dm:
-                    #print "###",dm,' '*(50-len(dm)),vm.instcount,vm.regs,vm.stack
-                    print "###",dm,' '*(50-len(dm)),"(%d)"%vm.instcount,
-                    stc = str(vm.regs)
-                    print stc,' '*(50-len(stc)),
-                    print '*'*len(vm.stack)
+            if s == "debug":
+                print "="*80
+                print "ACTIVATING DEBUG MODE"
+                print "="*80
+                debugmode = True
+            if debugmode:
+                vm.regs[7] = 1
+                print "###",dm,' '*(50-len(dm)),"(%d)"%vm.instcount,
+                stc = str(vm.regs)
+                print stc,' '*(50-len(stc)),
+                print '*'*len(vm.stack)
     except Exception as e:
         raise e
     finally:
