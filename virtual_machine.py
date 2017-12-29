@@ -140,7 +140,7 @@ class SynacorVM:
             # call a
             a = self.get_val(self.read_num())
             if a==6027:
-                self.regs[7] = 1
+                self.regs[7] = 25734
                 self.regs[0] = 6
                 return #"debug"
             self.stack.append(self.rip)

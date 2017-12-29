@@ -1,4 +1,5 @@
 *.pyc
 test_*
 convert
+ack
 *.txt
