@@ -139,6 +139,10 @@ class SynacorVM:
         elif opcode == 17:
             # call a
             a = self.get_val(self.read_num())
+            if a==6027:
+                self.regs[7] = 1
+                self.regs[0] = 6
+                return #"debug"
             self.stack.append(self.rip)
             self.jump_to(a)
         elif opcode == 18:
@@ -202,7 +206,8 @@ def main():
                 #debugmode = True
                 vm.regs[7] = 1
             if vm.instcount==877178:
-                debugmode = True
+                #debugmode = True
+                pass
             if debugmode:
                 time.sleep(0.1)
                 print "###",dm,' '*(50-len(dm)),"(%d)"%vm.instcount,
