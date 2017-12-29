@@ -1,4 +1,5 @@
 from disassembler import dism
+import time
 
 class SynacorVM:
     def __init__(self,program):
@@ -160,6 +161,7 @@ class SynacorVM:
                 inp.reverse()
                 self.inputBuffer = inp
                 print ">>>>>",z
+                #time.sleep(1)
                 if "use teleporter" in z:
                     debug = True
             self.set_regs(a, ord(self.inputBuffer.pop()))
@@ -197,9 +199,12 @@ def main():
                 print "="*80
                 print "ACTIVATING DEBUG MODE"
                 print "="*80
+                #debugmode = True
+                vm.regs[7] = 1
+            if vm.instcount==877178:
                 debugmode = True
             if debugmode:
-                vm.regs[7] = 1
+                time.sleep(0.1)
                 print "###",dm,' '*(50-len(dm)),"(%d)"%vm.instcount,
                 stc = str(vm.regs)
                 print stc,' '*(50-len(stc)),
